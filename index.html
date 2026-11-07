@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Design System &amp; Components</title>
+  <style>
+    /* ---------- Tokens (mirror tokens.json) ---------- */
+    :root {
+      --primary-50: #EEF2FF; --primary-100: #E0E7FF; --primary-500: #4F46E5; --primary-600: #4338CA; --primary-700: #3730A3;
+      --secondary-100: #CCFBF1; --secondary-500: #0D9488; --secondary-600: #0F766E;
+      --neutral-0: #FFFFFF; --neutral-50: #F9FAFB; --neutral-200: #E5E7EB; --neutral-400: #9CA3AF; --neutral-600: #4B5563; --neutral-900: #111827;
+      --success: #15803D; --warning: #B45309; --error: #B91C1C; --info: #1D4ED8;
+      --sp-1: 8px; --sp-2: 16px; --sp-3: 24px; --sp-4: 32px; --sp-6: 48px; --sp-8: 64px;
+      --r-sm: 6px; --r-md: 8px; --r-lg: 12px;
+      --font: "Inter", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font); color: var(--neutral-900); background: var(--neutral-50); line-height: 1.5; font-size: 16px; }
+    .page { max-width: 1120px; margin: 0 auto; padding: var(--sp-8) var(--sp-4); }
+    h1 { font-size: 32px; line-height: 40px; font-weight: 700; margin-bottom: 8px; }
+    h2 { font-size: 24px; line-height: 32px; font-weight: 600; margin-bottom: 8px; }
+    h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: var(--neutral-600); }
+    .intro { color: var(--neutral-600); margin-bottom: var(--sp-6); max-width: 680px; }
+    section { background: var(--neutral-0); border: 1px solid var(--neutral-200); border-radius: var(--r-lg); padding: var(--sp-4); margin-bottom: var(--sp-4); }
+    section > p.doc { color: var(--neutral-600); font-size: 14px; margin-bottom: var(--sp-3); }
+    .grid-states { display: grid; grid-template-columns: 140px repeat(3, 1fr); gap: 16px; align-items: center; }
+    .grid-states .head { font-size: 12px; font-weight: 600; color: var(--neutral-600); text-transform: uppercase; letter-spacing: 0.04em; }
+    .grid-states .row-label { font-size: 14px; font-weight: 500; color: var(--neutral-600); }
+
+    /* ---------- Buttons ---------- */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      height: 40px; padding: 0 var(--sp-2);
+      border-radius: var(--r-md); border: 1.5px solid transparent;
+      font: 500 14px/20px var(--font); cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    .btn-primary { background: var(--primary-600); color: #fff; }
+    .btn-primary:hover { background: var(--primary-700); }
+    .btn-secondary { background: var(--secondary-100); color: var(--secondary-600); border-color: var(--secondary-600); }
+    .btn-secondary:hover { background: #99F6E4; }
+    .btn-ghost { background: transparent; color: var(--primary-600); }
+    .btn-ghost:hover { background: var(--primary-50); }
+    .btn:focus-visible, .input:focus-visible, .select:focus-visible { outline: 3px solid #A5B4FC; outline-offset: 2px; }
+    .btn:disabled, .btn.is-disabled { background: var(--neutral-200); color: var(--neutral-400); border-color: transparent; cursor: not-allowed; }
+    .btn-ghost:disabled, .btn-ghost.is-disabled { background: transparent; border-color: transparent; }
+    .btn-secondary:disabled, .btn-secondary.is-disabled { background: var(--neutral-50); border-color: var(--neutral-200); color: var(--neutral-400); }
+
+    /* ---------- Inputs ---------- */
+    .field { display: flex; flex-direction: column; gap: 6px; width: 260px; }
+    .field label { font: 500 14px/20px var(--font); color: var(--neutral-900); }
+    .input, .select {
+      height: 40px; padding: 0 12px;
+      border: 1px solid var(--neutral-400); border-radius: var(--r-md);
+      font: 400 16px/24px var(--font); color: var(--neutral-900); background: #fff;
+    }
+    .input::placeholder { color: var(--neutral-600); }
+    .input:hover { border-color: var(--neutral-600); }
+    .input:focus, .select:focus { outline: none; border-color: var(--primary-600); box-shadow: 0 0 0 3px var(--primary-100); }
+    .input.is-error { border-color: var(--error); }
+    .input.is-error:focus { box-shadow: 0 0 0 3px #FEE2E2; }
+    .input:disabled { background: var(--neutral-50); color: var(--neutral-400); border-color: var(--neutral-200); }
+    .hint { font-size: 12px; color: var(--neutral-600); }
+    .hint.error { color: var(--error); }
+
+    /* ---------- Navbar ---------- */
+    .navbar {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px; padding: 0 var(--sp-3);
+      background: #fff; border: 1px solid var(--neutral-200); border-radius: var(--r-lg);
+    }
+    .brand { font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    .brand-mark { width: 24px; height: 24px; border-radius: 6px; background: var(--primary-600); }
+    .nav-links { display: flex; gap: var(--sp-3); list-style: none; }
+    .nav-links a { color: var(--neutral-600); text-decoration: none; font-weight: 500; font-size: 14px; padding: 6px 0; border-bottom: 2px solid transparent; }
+    .nav-links a:hover { color: var(--neutral-900); }
+    .nav-links a.active { color: var(--primary-600); border-bottom-color: var(--primary-600); }
+    .nav-actions { display: flex; gap: 8px; }
+
+    /* ---------- Dropdown ---------- */
+    .dropdown { position: relative; width: 260px; }
+    .dropdown-menu {
+      margin-top: 4px; background: #fff; border: 1px solid var(--neutral-200);
+      border-radius: var(--r-md); box-shadow: 0 8px 24px rgba(17,24,39,0.12); overflow: hidden;
+    }
+    .dropdown-item { padding: 10px 12px; font-size: 14px; color: var(--neutral-900); }
+    .dropdown-item:hover { background: var(--primary-50); }
+    .dropdown-item.selected { color: var(--primary-600); font-weight: 600; }
+    .dropdown-item.disabled { color: var(--neutral-400); }
+
+    /* ---------- Modal ---------- */
+    .modal-stage { background: rgba(17,24,39,0.5); border-radius: var(--r-lg); padding: var(--sp-6) var(--sp-4); display: flex; justify-content: center; }
+    .modal {
+      width: 420px; background: #fff; border-radius: var(--r-lg);
+      box-shadow: 0 20px 48px rgba(17,24,39,0.25); padding: var(--sp-4);
+    }
+    .modal h4 { font-size: 18px; line-height: 28px; font-weight: 600; margin-bottom: 8px; }
+    .modal p { color: var(--neutral-600); font-size: 14px; margin-bottom: var(--sp-3); }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 8px; }
+
+    /* ---------- Documentation ---------- */
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--neutral-200); vertical-align: top; }
+    th { color: var(--neutral-600); font-weight: 600; background: var(--neutral-50); }
+    code { font-family: ui-monospace, Menlo, monospace; font-size: 13px; background: var(--neutral-50); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--neutral-200); }
+    .swatch-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .swatch { border: 1px solid var(--neutral-200); border-radius: var(--r-md); overflow: hidden; }
+    .swatch .chip { height: 72px; }
+    .swatch .meta { padding: 10px 12px; font-size: 13px; }
+    .swatch .meta strong { display: block; }
+    .type-row { display: flex; align-items: baseline; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--neutral-200); }
+    .type-row:last-child { border-bottom: none; }
+    .type-meta { font-size: 12px; color: var(--neutral-600); }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <h1>Design System &amp; Components</h1>
+  <p class="intro">A reusable component library built on Inter, an 8 px spacing grid, and a token set for color, type, spacing, and radius. Each component lists its variants and states so developers and designers use the same definitions.</p>
+
+  <!-- 1. Tokens -->
+  <section aria-labelledby="tokens">
+    <h2 id="tokens">1. Color tokens</h2>
+    <p class="doc">Four families: Primary (actions), Secondary (supporting actions), Neutral (text and surfaces), Feedback (status messages). Source: <code>tokens.json</code>.</p>
+
+    <h3>Primary</h3>
+    <div class="swatch-row" style="margin-bottom: 16px;">
+      <div class="swatch"><div class="chip" style="background:#EEF2FF"></div><div class="meta"><strong>primary-50</strong>#EEF2FF</div></div>
+      <div class="swatch"><div class="chip" style="background:#4F46E5"></div><div class="meta"><strong>primary-500</strong>#4F46E5</div></div>
+      <div class="swatch"><div class="chip" style="background:#4338CA"></div><div class="meta"><strong>primary-600 (default)</strong>#4338CA</div></div>
+      <div class="swatch"><div class="chip" style="background:#3730A3"></div><div class="meta"><strong>primary-700 (hover)</strong>#3730A3</div></div>
+    </div>
+
+    <h3>Secondary</h3>
+    <div class="swatch-row" style="margin-bottom: 16px;">
+      <div class="swatch"><div class="chip" style="background:#CCFBF1"></div><div class="meta"><strong>secondary-100</strong>#CCFBF1</div></div>
+      <div class="swatch"><div class="chip" style="background:#0D9488"></div><div class="meta"><strong>secondary-500</strong>#0D9488</div></div>
+      <div class="swatch"><div class="chip" style="background:#0F766E"></div><div class="meta"><strong>secondary-600</strong>#0F766E</div></div>
+      <div class="swatch"><div class="chip" style="background:#99F6E4"></div><div class="meta"><strong>secondary-200 (hover)</strong>#99F6E4</div></div>
+    </div>
+
+    <h3>Neutral</h3>
+    <div class="swatch-row" style="margin-bottom: 16px;">
+      <div class="swatch"><div class="chip" style="background:#FFFFFF"></div><div class="meta"><strong>neutral-0</strong>#FFFFFF</div></div>
+      <div class="swatch"><div class="chip" style="background:#E5E7EB"></div><div class="meta"><strong>neutral-200 (border)</strong>#E5E7EB</div></div>
+      <div class="swatch"><div class="chip" style="background:#4B5563"></div><div class="meta"><strong>neutral-600 (muted text)</strong>#4B5563</div></div>
+      <div class="swatch"><div class="chip" style="background:#111827"></div><div class="meta"><strong>neutral-900 (text)</strong>#111827</div></div>
+    </div>
+
+    <h3>Feedback</h3>
+    <div class="swatch-row">
+      <div class="swatch"><div class="chip" style="background:#15803D"></div><div class="meta"><strong>success</strong>#15803D</div></div>
+      <div class="swatch"><div class="chip" style="background:#B45309"></div><div class="meta"><strong>warning</strong>#B45309</div></div>
+      <div class="swatch"><div class="chip" style="background:#B91C1C"></div><div class="meta"><strong>error</strong>#B91C1C</div></div>
+      <div class="swatch"><div class="chip" style="background:#1D4ED8"></div><div class="meta"><strong>info</strong>#1D4ED8</div></div>
+    </div>
+  </section>
+
+  <!-- 2. Typography -->
+  <section aria-labelledby="type">
+    <h2 id="type">2. Typography styles</h2>
+    <p class="doc">Font: Inter. Weights 400, 500, 600, 700. Sizes and line heights are in px.</p>
+    <div class="type-row"><span style="font-size:40px;line-height:48px;font-weight:700;">Display heading</span><span class="type-meta">Display · 40/48 · Bold 700</span></div>
+    <div class="type-row"><span style="font-size:32px;line-height:40px;font-weight:700;">Heading 1</span><span class="type-meta">H1 · 32/40 · Bold 700</span></div>
+    <div class="type-row"><span style="font-size:24px;line-height:32px;font-weight:600;">Heading 2</span><span class="type-meta">H2 · 24/32 · Semibold 600</span></div>
+    <div class="type-row"><span style="font-size:16px;line-height:24px;">Body text for paragraphs and descriptions.</span><span class="type-meta">Body · 16/24 · Regular 400</span></div>
+    <div class="type-row"><span style="font-size:14px;line-height:20px;font-weight:500;">Label text for buttons and fields</span><span class="type-meta">Label · 14/20 · Medium 500</span></div>
+    <div class="type-row"><span style="font-size:12px;line-height:16px;">Caption and helper text</span><span class="type-meta">Caption · 12/16 · Regular 400</span></div>
+  </section>
+
+  <!-- 3. Buttons -->
+  <section aria-labelledby="buttons">
+    <h2 id="buttons">3. Buttons</h2>
+    <p class="doc">Three variants (Primary, Secondary, Ghost) in three states (Default, Hover, Disabled). Height 40 px, horizontal padding 16 px, radius 8 px, label Label 14/20 Medium. Hover states are shown as static frames here; in Figma, create them as component variants.</p>
+    <div class="grid-states">
+      <div></div><div class="head">Default</div><div class="head">Hover</div><div class="head">Disabled</div>
+
+      <div class="row-label">Primary</div>
+      <div><button class="btn btn-primary">Save changes</button></div>
+      <div><button class="btn btn-primary" style="background:#3730A3">Save changes</button></div>
+      <div><button class="btn btn-primary is-disabled" disabled>Save changes</button></div>
+
+      <div class="row-label">Secondary</div>
+      <div><button class="btn btn-secondary">Export</button></div>
+      <div><button class="btn btn-secondary" style="background:#99F6E4">Export</button></div>
+      <div><button class="btn btn-secondary is-disabled" disabled>Export</button></div>
+
+      <div class="row-label">Ghost</div>
+      <div><button class="btn btn-ghost">Cancel</button></div>
+      <div><button class="btn btn-ghost" style="background:#EEF2FF">Cancel</button></div>
+      <div><button class="btn btn-ghost is-disabled" disabled>Cancel</button></div>
+    </div>
+  </section>
+
+  <!-- 4. Inputs -->
+  <section aria-labelledby="inputs">
+    <h2 id="inputs">4. Input fields and dropdown</h2>
+    <p class="doc">Text inputs: height 40 px, 1 px neutral-400 border, focus ring 3 px primary-100. Error state uses the error token. Helper text sits below at Caption size.</p>
+    <div style="display:flex; gap: 32px; flex-wrap: wrap; align-items: flex-start;">
+      <div class="field">
+        <label for="f-default">Email</label>
+        <input id="f-default" class="input" placeholder="name@company.com" />
+        <span class="hint">We will send your invite here.</span>
+      </div>
+      <div class="field">
+        <label for="f-focus">Team name (focused)</label>
+        <input id="f-focus" class="input" value="Product Design" style="border-color:#4338CA; box-shadow: 0 0 0 3px #E0E7FF; outline:none;" />
+        <span class="hint">Shown in the sidebar.</span>
+      </div>
+      <div class="field">
+        <label for="f-error">Password</label>
+        <input id="f-error" class="input is-error" value="abc" aria-invalid="true" aria-describedby="err-msg" />
+        <span class="hint error" id="err-msg">Use at least 8 characters.</span>
+      </div>
+      <div class="field">
+        <label for="f-disabled">Workspace ID</label>
+        <input id="f-disabled" class="input" value="WS-20491" disabled />
+        <span class="hint">Set by your admin.</span>
+      </div>
+    </div>
+
+    <div style="display:flex; gap: 32px; margin-top: 32px; align-items:flex-start;">
+      <div class="field" style="width:260px;">
+        <label for="role">Role</label>
+        <select id="role" class="select">
+          <option>Editor</option>
+          <option>Viewer</option>
+          <option>Admin</option>
+        </select>
+      </div>
+      <div class="dropdown" aria-label="Dropdown open example">
+        <div class="field" style="width:260px;"><label>Role (open)</label><div class="input" style="display:flex;align-items:center;justify-content:space-between;">Editor <span aria-hidden="true">▾</span></div></div>
+        <div class="dropdown-menu" role="listbox">
+          <div class="dropdown-item selected" role="option" aria-selected="true">Editor</div>
+          <div class="dropdown-item" role="option">Viewer</div>
+          <div class="dropdown-item" role="option">Admin</div>
+          <div class="dropdown-item disabled" role="option" aria-disabled="true">Owner (contact admin)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Navbar -->
+  <section aria-labelledby="navbar">
+    <h2 id="navbar">5. Navigation bar</h2>
+    <p class="doc">Height 64 px, horizontal padding 24 px, nav links 14/20 Medium. Active link uses primary-600 with a 2 px underline. Auto Layout: space-between with 24 px link gap.</p>
+    <nav class="navbar" aria-label="Main">
+      <div class="brand"><span class="brand-mark" aria-hidden="true"></span>Acme</div>
+      <ul class="nav-links">
+        <li><a href="#" class="active" aria-current="page">Projects</a></li>
+        <li><a href="#">Team</a></li>
+        <li><a href="#">Reports</a></li>
+        <li><a href="#">Settings</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="btn btn-ghost">Help</button>
+        <button class="btn btn-primary">New project</button>
+      </div>
+    </nav>
+  </section>
+
+  <!-- 6. Modal -->
+  <section aria-labelledby="modal">
+    <h2 id="modal">6. Modal dialog</h2>
+    <p class="doc">Width 420 px, padding 32 px, radius 12 px, shadow 20 px. Actions align right: secondary action (Ghost) then primary action. Destructive actions use the error token on the primary button.</p>
+    <div class="modal-stage">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <h4 id="modal-title">Invite team members</h4>
+        <p>Invited people receive an email and can join as Editors or Viewers.</p>
+        <div class="field" style="width:100%; margin-bottom: 24px;">
+          <label for="invite">Email addresses</label>
+          <input id="invite" class="input" placeholder="name@company.com" />
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-ghost">Cancel</button>
+          <button class="btn btn-primary">Send invites</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Documentation -->
+  <section aria-labelledby="docs">
+    <h2 id="docs">7. Component reference</h2>
+    <p class="doc">Use this table as the handoff reference for developers.</p>
+    <table>
+      <tr><th>Component</th><th>Variants</th><th>States</th><th>Tokens used</th></tr>
+      <tr><td>Button</td><td>Primary, Secondary, Ghost</td><td>Default, Hover, Disabled</td><td>primary-600, primary-700, secondary-100, neutral-200</td></tr>
+      <tr><td>Input</td><td>Text, Select</td><td>Default, Focus, Error, Disabled</td><td>neutral-400, primary-100, error</td></tr>
+      <tr><td>Dropdown</td><td>Closed, Open</td><td>Default, Selected, Disabled item</td><td>primary-50, neutral-200</td></tr>
+      <tr><td>Navbar</td><td>Default</td><td>Active link</td><td>primary-600, neutral-600</td></tr>
+      <tr><td>Modal</td><td>Standard, Destructive</td><td>Default</td><td>neutral-0, neutral-900, error</td></tr>
+    </table>
+  </section>
+
+</div>
+</body>
+</html>
